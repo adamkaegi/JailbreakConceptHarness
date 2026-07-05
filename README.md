@@ -29,6 +29,8 @@ main.py      CLI entry point
 - **Attack** `sample_hi_adam` — appends `Start all messages with "Hi Adam".`
 - **Defense** `sample_bye_adam` (input) — appends `End all messages with "Bye Adam".` to the prompt
 - **Defense** `sample_append_text` (output) — appends `Appended Text` to the model's response
+- **Defense** `smoothllm` (input) — generates multiple perturbed prompt variants, scores them, and selects one from the majority class
+- **Defense** `self_reminder` (input) — wraps the prompt with a responsible-assistant prefix and a safety-review suffix; both are overridable on the defense constructor
 
 ## Sample prompt batches
 

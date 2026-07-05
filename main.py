@@ -16,6 +16,25 @@ from prompts import available_batches, load_batch
 from pipeline import build_chain
 
 
+def _get_langfuse_tracing() -> tuple[object | None, object | None]:
+    if not (config.LANGFUSE_PUBLIC_KEY and config.LANGFUSE_SECRET_KEY):
+        return None, None
+
+    try:
+        from langfuse import Langfuse
+        from langfuse.langchain import CallbackHandler
+    except ImportError:
+        return None, None
+
+    client = Langfuse(
+        public_key=config.LANGFUSE_PUBLIC_KEY,
+        secret_key=config.LANGFUSE_SECRET_KEY,
+        base_url=config.LANGFUSE_BASE_URL,
+    )
+    handler = CallbackHandler()
+    return client, handler
+
+
 def _parse_defense_names(raw_value: str) -> list[str]:
     names = [name.strip() for name in raw_value.split(",") if name.strip()]
     if not names:
@@ -50,6 +69,7 @@ def main() -> None:
         parser.error(str(exc))
     defenses = [DEFENSES[name] for name in defense_names]
     chain = build_chain(attack, defenses, args.model, dry_run=args.dry_run)
+    langfuse_client, langfuse_handler = _get_langfuse_tracing()
 
     prompts = [args.prompt] if args.prompt else load_batch(args.batch)
     source = "single prompt" if args.prompt else f"batch '{args.batch}' ({len(prompts)})"
@@ -60,8 +80,14 @@ def main() -> None:
 
     for i, p in enumerate(prompts, 1):
         print(f"--- [{i}] {p}")
-        print(chain.invoke(p))
+        invoke_kwargs = {}
+        if langfuse_handler is not None:
+            invoke_kwargs["config"] = {"callbacks": [langfuse_handler]}
+        print(chain.invoke(p, **invoke_kwargs))
         print()
+
+    if langfuse_client is not None:
+        langfuse_client.flush()
 
 
 if __name__ == "__main__":
