@@ -4,6 +4,7 @@ MODEL = "llama3.2:3b"   # any pulled Ollama model tag
 
 ATTACK = "sample_hi_adam"      # attacks:  sample_hi_adam | none
 DEFENSE = "sample_bye_adam_input,sample_bye_adam_output"  # comma-separated defenses
+JUDGE = "sample_safe_unsafe"   # judges:  sample_safe_unsafe
 BATCH = "general"       # prompt batch = a .txt file stem in prompts/
 
 LANGFUSE_PUBLIC_KEY = "pk-lf-8b007852-46b2-435a-b84d-b90b592aa3c8"

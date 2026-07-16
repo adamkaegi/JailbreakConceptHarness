@@ -3,7 +3,8 @@
     prompt -> attack -> [input defenses] -> model -> [output defenses]
 
 A defense's `stage` decides where it plugs in. Attack and defense are plain
-objects, so swapping them is a one-liner and pipeline.py never changes.
+objects, so swapping them is a one-liner and pipeline.py never changes. The
+judge runs after the chain returns so the model output stays intact.
 """
 
 from collections.abc import Sequence
@@ -15,8 +16,6 @@ from langchain_core.runnables import Runnable, RunnableLambda
 
 from attacks.base import Attack
 from defenses.base import Defense
-
-
 def _make_model(model_name: str, dry_run: bool) -> Runnable:
     """Real Ollama model, or an echo stub for --dry-run (tests wiring
     with no server)."""
@@ -32,7 +31,10 @@ def _compose(runnables: list[Runnable]) -> Runnable:
 
 
 def build_chain(
-    attack: Attack, defenses: Sequence[Defense], model_name: str, dry_run: bool = False
+    attack: Attack,
+    defenses: Sequence[Defense],
+    model_name: str,
+    dry_run: bool = False,
 ) -> Runnable:
     prompt = ChatPromptTemplate.from_messages([("user", "{text}")])
     model = _make_model(model_name, dry_run)
