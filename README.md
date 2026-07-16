@@ -39,7 +39,7 @@ main.py      CLI entry point
 - **Defense** `smoothllm` (input) — generates multiple perturbed prompt variants, scores them, and selects one from the majority class
 - **Defense** `self_reminder` (input) — wraps the prompt with a responsible-assistant prefix and a safety-review suffix; both are overridable on the defense constructor
 
-## Sample prompt batches
+## Prompt batches
 
 - `general` — everyday questions
 - `instructions` — instruction-following prompts
