@@ -119,3 +119,9 @@ Nothing in `pipeline.py` or `main.py` changes when you do.
 
 Add as needed for testing
 - `scripts/run_readme_examples.sh` — runs every example from the [Run](#run) section consecutively.
+
+## ToDo
+
+- Clean up my defences
+- Figure out the judge
+- Figure out the prompts to use
