@@ -1,6 +1,6 @@
 from .base import Defense
-from .sample_bye_adam import SampleByeAdamDefense
-from .sample_append_text import SampleAppendTextDefense
+from .sample_bye_adam_input import SampleByeAdamInputDefense
+from .sample_bye_adam_output import SampleByeAdamOutputDefense
 from .smoothllm import SmoothLLMDefense
 from .self_reminder import SelfReminderDefense
 from .none import NoOpDefense
@@ -8,8 +8,8 @@ from .none import NoOpDefense
 DEFENSES: dict[str, Defense] = {
     d.name: d
     for d in (
-        SampleByeAdamDefense(),
-        SampleAppendTextDefense(),
+        SampleByeAdamInputDefense(),
+        SampleByeAdamOutputDefense(),
         SmoothLLMDefense(),
         SelfReminderDefense(),
         NoOpDefense(),

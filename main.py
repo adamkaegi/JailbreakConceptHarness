@@ -3,7 +3,7 @@
 Examples:
     python main.py "What is the capital of France?"
     python main.py                       # runs the batch set in config.py
-    python main.py --batch instructions --defense sample_bye_adam,sample_append_text
+    python main.py --batch instructions --defense sample_bye_adam_input,sample_bye_adam_output
     python main.py --dry-run             # no Ollama needed
 """
 

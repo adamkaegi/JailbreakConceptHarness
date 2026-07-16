@@ -1,8 +1,8 @@
 from .base import Defense
 
 
-class SampleByeAdamDefense(Defense):
-    name = "sample_bye_adam"
+class SampleByeAdamInputDefense(Defense):
+    name = "sample_bye_adam_input"
     stage = "input"
 
     def apply(self, text: str) -> str:
