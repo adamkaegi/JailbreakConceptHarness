@@ -1,6 +1,6 @@
-# jailbreak-poc — minimal attack/defense chain
+# Jailbreak — minimal attack/defense chain
 
-A tiny LangChain (LCEL) skeleton that runs a prompt through a swappable
+A tiny LangChain harness that runs a prompt through a swappable
 **attack**, a swappable **defense**, a swappable **judge**, and a local Ollama model.
 
 ## Flow
@@ -42,6 +42,10 @@ outputs/     CSV files written per run
 
 - **Defense** `smoothllm` (input) — generates multiple perturbed prompt variants, scores them, and selects one from the majority class
 - **Defense** `self_reminder` (input) — wraps the prompt with a responsible-assistant prefix and a safety-review suffix; both are overridable on the defense constructor
+
+## Judges
+
+- **Judge** `sample` — sample
 
 ## Prompt batches
 
