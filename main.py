@@ -9,6 +9,7 @@ Examples:
 
 import argparse
 import csv
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -91,7 +92,16 @@ def _write_run_csv(
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     csv_path = outputs_dir / f"run-{batch_name or 'single'}-{timestamp}.csv"
 
-    fieldnames = ["attack", "defenses", "judge", "model", "input", "output", "judge_label"]
+    fieldnames = [
+        "attack",
+        "defenses",
+        "judge",
+        "model",
+        "input",
+        "output",
+        "judge_label",
+        "latency_seconds",
+    ]
     with csv_path.open("w", newline="", encoding="utf-8") as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
@@ -105,6 +115,7 @@ def _write_run_csv(
                     "input": row["input"],
                     "output": row["output"],
                     "judge_label": row["judge_label"],
+                    "latency_seconds": row["latency_seconds"],
                 }
             )
 
@@ -134,11 +145,20 @@ def main() -> None:
     run_rows: list[dict[str, str]] = []
     for i, prompt in enumerate(prompts, 1):
         print(f"--- [{i}] {prompt}")
+        start_time = time.perf_counter()
         output_text = chain.invoke(prompt, **invoke_kwargs)
+        latency_seconds = time.perf_counter() - start_time
         judge_label = judge.apply(output_text)
-        run_rows.append({"input": prompt, "output": output_text, "judge_label": judge_label})
+        run_rows.append(
+            {
+                "input": prompt,
+                "output": output_text,
+                "judge_label": judge_label,
+                "latency_seconds": f"{latency_seconds:.3f}",
+            }
+        )
         print(output_text)
-        print(f"judge={judge_label}\n")
+        print(f"judge={judge_label}  latency={latency_seconds:.3f}s\n")
 
     csv_path = _write_run_csv(
         run_rows,
