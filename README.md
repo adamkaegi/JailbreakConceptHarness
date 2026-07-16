@@ -25,6 +25,7 @@ config.py    model / attack / defense / batch defaults
 pipeline.py  builds the LCEL chain
 main.py      CLI entry point
 outputs/     CSV files written per run
+scripts/     shell scripts that run main.py multiple times consecutively
 ```
 
 ## Sample components
@@ -114,6 +115,7 @@ python main.py --dry-run                              # no Ollama, tests wiring
 
 Nothing in `pipeline.py` or `main.py` changes when you do.
 
-## Todo
+## Scripts
 
-- Add scripts for running multiple
+Add as needed for testing
+- `scripts/run_readme_examples.sh` — runs every example from the [Run](#run) section consecutively.
